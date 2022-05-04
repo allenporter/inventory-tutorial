@@ -41,8 +41,8 @@ def compute_inventory(elements: list[int], lights: list[int]) -> dict[int, int]:
         # elements needed from the inventory
         result[found_light] = result.get(found_light, 0) + 1
         element -= found_light
-        # The element isn't "complete" yet so put it back in the list
         if element > 0:
+            # The element isn't "complete" yet so put it back in the list
             remaining_elements.append(element)
     return result
 
