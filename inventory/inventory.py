@@ -21,29 +21,24 @@ def compute_inventory(elements: list[int], lights: list[int]) -> dict[int, int]:
     _LOGGER.debug(f"Elements: {elements}")
     result = {}
     lights.sort(reverse=True)
-    remaining_elements = copy.copy(elements)
-    while remaining_elements:
-        remaining_elements.sort()
-        # Get biggest element
-        element = remaining_elements.pop()
-        _LOGGER.debug(f"Evaluating element of size {element}")
-        # Find first light that can partially satisfy what the element needs
-        found_light: int | None = None
-        for light in lights:
-            if light <= element:
-                found_light = light
-                break
-        if not found_light:
-            raise ValueError(f"Could not satisfy element of remaining size {element}")
 
-        _LOGGER.debug(f"Using inventory light {found_light}")
-        # Mark this light in the desired inventory and reduce the amount of
-        # elements needed from the inventory
-        result[found_light] = result.get(found_light, 0) + 1
-        element -= found_light
-        if element > 0:
-            # The element isn't "complete" yet so put it back in the list
-            remaining_elements.append(element)
+    for element in elements:
+        _LOGGER.debug(f"Evaluating element of size {element}")
+        found = {}
+        remaining = element
+        while remaining > 0:
+            # Find first light that can partially satisfy what the element needs
+            found_light = next(( light for light in lights if light <= remaining ), None)
+            if not found_light:
+                raise ValueError(f"Could not satisfy remaining {remaining} of elmennet {element}")
+            _LOGGER.debug(f"Using inventory light {found_light}")
+            # Mark this light in the desired inventory and reduce the amount of
+            # elements needed from the inventory
+            found[found_light] = found.get(found_light, 0) + 1
+            remaining -= found_light
+        _LOGGER.debug(f"Used lights {found} to build element {element}")
+        for k, v in found.items():
+            result[k] = result.get(k, 0) + v
     return result
 
 
