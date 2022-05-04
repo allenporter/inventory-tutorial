@@ -14,7 +14,7 @@ def compute_inventory(elements: list[int], lights: list[int]) -> dict[int, int]:
 
     Given a set of element sizes (e.g. 327, 120) and a set of sizes of available
     lights in the inventory (e.g. 100, 20, 7) compute the amount of each light
-    size in the inveotyr that is needed (e.g. 4x100, 2x20, 1x7).
+    size in the inventory that is needed (e.g. 4x100, 2x20, 1x7).
     """
 
     # Make the element list into a heap , 
